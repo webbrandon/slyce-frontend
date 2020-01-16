@@ -1,5 +1,53 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+  div.cover-heading#payPie
+    div.table-responsive(style="display: inline-block;")
+      form#claimList
+        div.form-group
+          h1.float-left Claim a slyce:
+          table.table.table-striped.table-dark
+            tbody#pieItems
+          br
+          div.btn-group.btn-group-lrg(role="group")
+            button.btn.btn-secondary.btn-lrg#send(type="button", style="height: 50px;width: 65%;margin: auto;") Pay Your Slyce
+            div.btn-group(role="group")
+              button.btn.btn-secondary.btn-lrg.dropdown-toggle#btnGroupDrop1(type="button",data-toggle="dropdown",aria-haspopup="true",aria-expanded="false") Method
+              div.dropdown-menu(aria-labelledby="btnGroupDrop1")
+                a.dropdown-item Apple Pay
+                a.dropdown-item Visa
+                a.dropdown-item MasterCard
+                a.dropdown-item PayPal
+                a.dropdown-item Zello
+  div.cover-heading#pay
+    div.table-responsive(style="display: inline-block;")
+      div.form-group
+        h1.float-left Pay your slyce of the pie::
+        table.table.table-dark
+          tbody#pies
+  div.cover-heading#cut
+    form#take-photo
+      div.form-group
+        video#player(autoplay)
+        canvas#canvas(width=600, height=600, zoom=.1)
+        br
+        button.btn.btn-secondary.btn-lrg#capture(style="height: 50px;width: 65%;margin: auto;") Slyce It!
+        p#upload-syncing(style="display: None; font-size: 30px;") Cutting your pie, please wait ...
+        script(src="/javascripts/camera.js")
+  div.cover-heading#cutPay(style="margin-top: 300px;")
+    div(style="display: inline-block;")
+      a#cutLink(href="#cut")
+        div
+          img(src="/images/icons/pie-chart-fill.svg", width="300", height="300")
+        p.lg-font Cut
+    div(style="display: inline-block;")
+      a#payLink(href="#pay")
+        div
+          img(src="/images/icons/credit-card.svg", width="300", height="300")
+        p.lg-font Pay
+  div.cover-heading#intro(style="margin-top: 300px;")
+    img(src="/images/slyce-logo-2.png", style="margin-bottom: 80px;")
+    form#get-name
+      div.form-group
+        input.form-control.form-control-lg.col-form-label-lg#userId(placeholder="User ID", style="height: 100px;width: 65%;margin: auto;margin-bottom:40px;")
+        button.btn.btn-secondary.btn-lrg#beginBtn(style="height: 50px;width: 65%;margin: auto;") Submit

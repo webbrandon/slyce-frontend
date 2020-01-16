@@ -1,7 +1,19 @@
 doctype html
 html
   head
-    title= title
-    link(rel='stylesheet', href='/stylesheets/style.css')
-  body
-    block content
+    title= "Slyce: Pay your slyce of the pie!"
+    link(rel='stylesheet', href='/stylesheets/bootstrap.min.css')
+    link(rel='stylesheet', href='/stylesheets/cover.css')
+  body.text-center
+    div.cover-container.d-flex.w-100.h-100.p-3.mx-auto.flex-column
+      header.masthead
+        div.inner
+          img.masthead-brand#headerImage(src="/images/slyce-logo.png", width="220", height="110")
+        nav.nav.nav-masthead.justify-content-center
+          a.nav-link(href="#")
+            img(src="/images/icons/gear-wide-connected.svg", width="100", height="100")
+      main.inner.cover
+        block content
+      footer.mastfoot.mt-auto
+        script(src="/javascripts/app.js")
+        div.inner
