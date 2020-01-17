@@ -71,7 +71,7 @@ body {
 }
 
 .cover-container {
-  max-width: 65em;
+  max-width: 55em;
 }
 
 .lg-font {
@@ -82,6 +82,7 @@ body {
  * Header
  */
 .masthead {
+  margin-top: 30px;
   margin-bottom: 5rem;
 }
 

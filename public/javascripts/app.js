@@ -7,6 +7,11 @@ let introBtn = document.getElementById('beginBtn');
 let cutLink = document.getElementById('cutLink');
 let payLink = document.getElementById('payLink');
 let payPie = document.getElementById('payPie');
+let userSettings = document.getElementById('userSettings');
+
+let backCutPay = document.getElementById('backCutPay');
+let backCutPay2 = document.getElementById('backCutPay2');
+let backPay = document.getElementById('backPay');
 
 headerMenu.style.visibility = "hidden"
 
@@ -18,32 +23,65 @@ function turnOffAllViews() {
 }
 turnOffAllViews()
 
+userSettings.addEventListener('click', (e) => {
+  turnOffAllViews()
+  intro.style.display = "inline-block"
+  headerMenu.style.visibility = "hidden"
+  e.preventDefault();
+})
 
 introBtn.addEventListener('click', (e) => {
+  let introError = document.getElementById('introError')
   userId = document.getElementById('userId').value.replace(' ', '_')
+  if (userId == '') {
+    introError.innerText = "Please enter a user name."
+    e.preventDefault();
+    return
+  }
+
+  introError.innerText = ""
+  turnOffAllViews()
   intro.style.display = "none"
   cutPay.style.display = "inline-block"
   headerMenu.style.visibility = "visible"
   e.preventDefault();
 })
 
-
 cutLink.addEventListener('click', (e) => {
-  cutPay.style.display = "none"
+  turnOffAllViews()
   cutScreen.style.display = "inline-block"
   e.preventDefault();
 })
-
 
 payLink.addEventListener('click', (e) => {
   getReceits()
   e.preventDefault();
 })
 
-function getReceits() {
+backCutPay.addEventListener('click', (e) => {
+  turnOffAllViews()
+  cutPay.style.display = "inline-block"
+  e.preventDefault();
+})
+
+backCutPay2.addEventListener('click', (e) => {
+  turnOffAllViews()
+  cutPay.style.display = "inline-block"
+  e.preventDefault();
+})
+
+backPay.addEventListener('click', (e) => {
   turnOffAllViews()
   payScreen.style.display = "inline-block"
-  fetch('http://slyce-api.platform/receipt', {
+  e.preventDefault();
+})
+
+function getReceits() {
+  let pies = document.getElementById('pies')
+  pies.innerHTML = ''
+  turnOffAllViews()
+  payScreen.style.display = "inline-block"
+  fetch('https://api.slyce.cloud/receipt', {
     method: 'GET', // *GET, POST, PUT, DELETE, etc.
     mode: 'cors', // no-cors, *cors, same-origin
     headers: {
@@ -63,9 +101,11 @@ function getReceits() {
 }
 
 function loadPie(id) {
+  let pieItems = document.getElementById('pieItems')
+  pieItems.innerHTML = ''
   turnOffAllViews()
   payPie.style.display = "inline-block"
-  fetch('http://slyce-api.platform/receipt/' + id, {
+  fetch('https://api.slyce.cloud/receipt/' + id, {
     method: 'GET', // *GET, POST, PUT, DELETE, etc.
     mode: 'cors', // no-cors, *cors, same-origin
     headers: {
@@ -84,7 +124,7 @@ function loadPie(id) {
 }
 
 function claimItem(pieId,itemId,user) {
-  let url = 'http://slyce-api.platform/receipt/claim/' + pieId + '/' + itemId + '/' + user
+  let url = 'https://api.slyce.cloud/receipt/claim/' + pieId + '/' + itemId + '/' + user
   fetch(url, {
     method: 'PUT', // *GET, POST, PUT, DELETE, etc.
     mode: 'cors', // no-cors, *cors, same-origin
@@ -96,7 +136,7 @@ function claimItem(pieId,itemId,user) {
 }
 
 function renderPie(data) {
-  let pieItems = document.getElementById('pieItems');
+  let pieItems = document.getElementById('pieItems')
   data.data.attributes.receiptLineItems.forEach((item, i) => {
     console.log(item)
     let row = document.createElement('tr')
@@ -138,7 +178,7 @@ function renderPie(data) {
 }
 
 function renderReceipts(data) {
-  let pies = document.getElementById('pies');
+  let pies = document.getElementById('pies')
   data.data.attributes.forEach((item, i) => {
     let row = document.createElement('tr')
     let a1 = document.createElement('a')
