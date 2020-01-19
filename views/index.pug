@@ -11,14 +11,37 @@ block content
           table.table.table-striped.table-dark
             tbody#pieItems
           br
-          div.dropdown
-            button.btn.btn-secondary.btn-lrg.dropdown-toggle.dropdown-toggle-split#dLabel(type="button", data-toggle="dropdown", aria-haspopup="true", aria-expanded="false")
-            div.dropdown-menu(aria-labelledby="dLabel")
-              button.dropdown-item(type="button") Apple Pay
-              button.dropdown-item(type="button") Visa
-              button.dropdown-item(type="button") MasterCard
-              button.dropdown-item(type="button") PayPal
-              button.dropdown-item(type="button") Zello
+          button.btn.btn-secondary.btn-lrg#taxCharge(type='button', style="height: 50px;margin: auto;width: 85%;margin-botom:30px;")
+          br
+          button.btn.btn-secondary.btn-lrg#additionalCharge(type='button', style="height: 50pxwidth: 85%;;margin: auto;")
+          br
+          hr
+          button.btn.btn-secondary.btn-lrg#selectPayment(style="height: 50px;width: 85%;margin: auto;") Pay
+  div.cover-heading#payments(style='width:100%;')
+    div.float-left
+      img(src="/images/icons/arrow-left.svg", width="100", height="100")#backPayPie
+    div.table-responsive(style="display: inline-block;")
+      div.float-right
+        h1.float-right.text-right#pieTotal
+        h5.text-right(style='margin: auto;margin-top:50px;') Your Slyce
+      div.float-left
+        h1.float-left.text-info.text-left#pieCost
+        h5.text-warning.text-left#pieTax(style='margin: auto;margin-top:50px;')
+      h2.text-left(style='margin: auto;margin-top:130px;') Payment Methods
+      br
+      button.btn.btn-secondary.btn-lrg(onclick="payWith('venmo')", type="button", style="height: 50px;width: 85%;margin: auto;margin-bottom: 20px;") Venmo
+      br
+      button.btn.btn-secondary.btn-lrg(onclick="payWith('applepay')", type="button", style="height: 50px;width: 85%;margin: auto;margin-bottom: 20px;") Apple Pay
+      br
+      button.btn.btn-secondary.btn-lrg(onclick="payWith('amazonpay')", type="button", style="height: 50px;width: 85%;margin: auto;margin-bottom: 20px;") Amazon Pay
+      br
+      button.btn.btn-secondary.btn-lrg(onclick="payWith('gpay')", type="button", style="height: 50px;width: 85%;margin: auto;margin-bottom: 20px;") Google Pay
+      br
+      button.btn.btn-secondary.btn-lrg(onclick="payWith('paypal')", type="button", style="height: 50px;width: 85%;margin: auto;margin-bottom: 20px;") Paypal
+      br
+      button.btn.btn-secondary.btn-lrg(onclick="payWith('debit')", type="button", style="height: 50px;width: 85%;margin: auto;margin-bottom: 20px;") Debit Card
+      br
+      button.btn.btn-secondary.btn-lrg(onclick="payWith('credit')", type="button", style="height: 50px;width: 85%;margin: auto;margin-bottom: 20px;") Credit Card
   div.cover-heading#pay
     div.float-left
       img(src="/images/icons/arrow-left.svg", width="100", height="100")#backCutPay
@@ -36,11 +59,11 @@ block content
         canvas#canvas(width=600, height=600, zoom=.1)
         br
         br
-        button.btn.btn-secondary.btn-lrg#capture(style="height: 50px;width: 65%;margin: auto;") Slyce It!
+        button.btn.btn-secondary.btn-lrg#capture(style="height: 50px;width: 85%;margin: auto;") Slyce It!
         p#upload-syncing(style="display: None; font-size: 30px;") Cutting your pie, please wait ...
         script(src="/javascripts/camera.js")
         hr
-        button.btn.btn-secondary.btn-lrg#selectFile(style="height: 50px;width: 65%;margin: auto;") Upload local image.
+        button.btn.btn-secondary.btn-lrg#selectFile(style="height: 50px;width: 85%;margin: auto;") Upload local image.
   div.cover-heading#cutPay(style="margin-top: 300px;")
     div(style="display: inline-block;")
       a#cutLink(href="#cut")
@@ -56,6 +79,14 @@ block content
     img(src="/images/slyce-logo-2.png", style="margin-bottom: 80px;")
     form#get-name
       div.form-group
-        input.form-control.form-control-lg.col-form-label-lg#userId(placeholder="User ID", style="height: 100px;width: 65%;margin: auto;margin-bottom:40px;")
-        button.btn.btn-secondary.btn-lrg#beginBtn(style="height: 50px;width: 65%;margin: auto;") Submit
+        input.form-control.form-control-lg.col-form-label-lg#userId(placeholder="User ID", style="height: 100px;width: 85%;margin: auto;margin-bottom:40px;")
+        button.btn.btn-secondary.btn-lrg#beginBtn(style="height: 50px;width: 85%;margin: auto;") Submit
         p.text-danger#introError
+  div.cover-heading#haltMsg
+    div.msg.table-responsive(style="margin-top: 300px;display:inline-block;")
+      h1 Are you sure?
+      p It seems
+        b#userPaying n/a
+        | is offering to pay for this.
+    button.btn.btn-secondary.btn-lrg#claimOverride(style="height: 50px;width: 85%;margin: auto;margin-bottom: 20px;") Claim
+    button.btn.btn-dark.btn-lrg(onclick="clearMsg()", style="height: 50px;width: 85%;margin: auto;") Cancel

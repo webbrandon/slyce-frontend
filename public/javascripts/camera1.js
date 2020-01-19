@@ -1,2 +1,2 @@
 const supported = 'mediaDevices' in navigator;
-let userId;
+let userId, pieId;
