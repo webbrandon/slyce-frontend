@@ -50,20 +50,6 @@ block content
         h1.float-left Pay your slyce of the pie:
         table.table.table-dark
           tbody#pies
-  div.cover-heading#cut
-    div.float-left
-      img(src="/images/icons/arrow-left.svg", width="100", height="100")#backCutPay2
-    form#take-photo
-      div.form-group
-        video#player(autoplay)
-        canvas#canvas(width=600, height=600, zoom=.1)
-        br
-        br
-        button.btn.btn-secondary.btn-lrg#capture(style="height: 50px;width: 85%;margin: auto;") Slyce It!
-        p#upload-syncing(style="display: None; font-size: 30px;") Cutting your pie, please wait ...
-        script(src="/javascripts/camera.js")
-        hr
-        button.btn.btn-secondary.btn-lrg#selectFile(style="height: 50px;width: 85%;margin: auto;") Upload local image.
   div.cover-heading#cutPay(style="margin-top: 300px;")
     div(style="display: inline-block;")
       a#cutLink(href="#cut")

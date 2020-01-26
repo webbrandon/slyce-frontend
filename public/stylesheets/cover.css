@@ -10,6 +10,105 @@
  user-select: none;
 }
 
+video, #camera--sensor, #camera, #camera--output {
+  position:fixed;
+  height:100%;
+  width:100%;
+  top:0px;
+  left:0px;
+  right:0px;
+  bottom:0px;
+  object-fit: cover;
+}
+
+
+video, #camera--view, #camera--sensor, #camera--output{
+    transform: scaleX(-1);
+    filter: FlipH;
+}
+
+#camera--output{
+    display: none;
+}
+
+#cloud--upload{
+    width: 200px;
+    background: none;
+    font: #ffffff;
+    font-size: 16px;
+    border: none;
+    padding: 15px 20px;
+    text-align: center;
+    position: fixed;
+    top: 30px;
+    right:30px;
+    z-index: 3;
+}
+
+#camera--escape{
+    width: 200px;
+    background: none;
+    font: #ffffff;
+    font-size: 16px;
+    border: none;
+    padding: 15px 20px;
+    text-align: center;
+    position: fixed;
+    top: 30px;
+    left:30px;
+    z-index: 3;
+}
+
+#camera--retake{
+    width: 200px;
+    display: none;
+    background: none;
+    font: #ffffff;
+    font-size: 16px;
+    border: none;
+    padding: 15px 20px;
+    text-align: center;
+    position: fixed;
+    bottom: calc(50% - 100px);
+    left: calc(50% - 100px);
+    z-index: 3;
+}
+
+#camera--save{
+    width: 200px;
+    display: none;
+    background-color: black;
+    color: white;
+    font-size: 16px;
+    border-radius: 30px;
+    border: none;
+    padding: 15px 20px;
+    text-align: center;
+    box-shadow: 0 5px 10px 0 rgba(0,0,0,0.2);
+    position: fixed;
+    bottom: 30px;
+    left: calc(50% - 100px);
+    z-index: 3;
+}
+
+#camera--trigger{
+    width: 200px;
+    background-color: none;
+    border: none;
+    padding: 0px;
+    text-align: center;
+    position: fixed;
+    bottom: 0px;
+    left: calc(50% - 100px);
+}
+
+.taken{
+    height: 100%;
+    width: 100%;
+    transition: all 0.5s ease-in;
+    z-index: 2;
+}
+
 @media (min-width: 768px) {
  .bd-placeholder-img-lg {
    font-size: 3.5rem;

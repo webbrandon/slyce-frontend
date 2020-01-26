@@ -1,126 +1,71 @@
-let intro = document.getElementById('intro');
-let cutPay = document.getElementById('cutPay');
-let cutScreen = document.getElementById('cut');
-let payScreen = document.getElementById('pay');
-let headerMenu = document.getElementById('headerImage');
-let introBtn = document.getElementById('beginBtn');
-let cutLink = document.getElementById('cutLink');
-let payLink = document.getElementById('payLink');
-let payPie = document.getElementById('payPie');
-let payments = document.getElementById('payments');
-let userSettings = document.getElementById('userSettings');
+let photoFile
+let constraints = { video: { width:1080, height:1920 }, audio: false };
+let track = null;
 
-let selectPayment = document.getElementById('selectPayment');
-
-let backCutPay = document.getElementById('backCutPay');
-let backCutPay2 = document.getElementById('backCutPay2');
-let backPay = document.getElementById('backPay');
-let backPayments = document.getElementById('backPayPie');
-
-headerMenu.style.visibility = "hidden"
+const cameraView = document.querySelector("#camera--view"),
+    cameraOutput = document.querySelector("#camera--output"),
+    cameraSensor = document.querySelector("#camera--sensor"),
+    cameraRetake = document.querySelector("#camera--retake"),
+    cameraSave = document.querySelector("#camera--save"),
+    cameraTrigger = document.querySelector("#camera--trigger"),
+    cloudUpload = document.querySelector("#cloud--upload"),
+    cameraEscape = document.querySelector("#camera--escape"),
+    headerSelector = document.querySelector("#header"),
+    coverSelector = document.querySelector("#main"),
+    cam = document.querySelector("#camera"),
+    intro = document.getElementById('intro'),
+    cutPay = document.getElementById('cutPay'),
+    payScreen = document.getElementById('pay'),
+    headerMenu = document.getElementById('headerImage'),
+    introBtn = document.getElementById('beginBtn'),
+    cutLink = document.getElementById('cutLink'),
+    payLink = document.getElementById('payLink'),
+    payPie = document.getElementById('payPie'),
+    payments = document.getElementById('payments'),
+    userSettings = document.getElementById('userSettings'),
+    selectPayment = document.getElementById('selectPayment'),
+    backCutPay = document.getElementById('backCutPay'),
+    backCutPay2 = document.getElementById('backCutPay2'),
+    backPay = document.getElementById('backPay'),
+    backPayments = document.getElementById('backPayPie')
 
 function turnOffAllViews() {
+  cam.style.display = 'none'
   cutPay.style.display = "none"
-  cutScreen.style.display = "none"
   payScreen.style.display = "none"
   payPie.style.display = "none"
   payments.style.display = "none"
 }
-turnOffAllViews()
 
-userSettings.addEventListener('click', (e) => {
-  turnOffAllViews()
-  intro.style.display = "inline-block"
-  headerMenu.style.visibility = "hidden"
-  e.preventDefault();
-})
 
-introBtn.addEventListener('click', (e) => {
-  let introError = document.getElementById('introError')
-  userId = document.getElementById('userId').value.replace(' ', '_')
-  if (userId == '') {
-    introError.innerText = "Please enter a user name."
-    e.preventDefault();
-    return
-  }
+// Access the device camera and stream to cameraView
+function cameraStart() {
+  cam.style.display = 'block'
+  headerSelector.style.display = 'none'
+  coverSelector.style.display = 'none'
+  cameraView.style.display = 'block'
+  cameraSensor.style.display = 'block'
+  cameraTrigger.style.display = 'block'
+  navigator.mediaDevices
+      .getUserMedia(constraints)
+      .then(function(stream) {
+          track = stream.getTracks()[0];
+          cameraView.srcObject = stream;
+      })
+      .catch(function(error) {
+          console.error("Oops. Something is broken.", error);
+      });
+}
 
-  introError.innerText = ""
-  turnOffAllViews()
-  intro.style.display = "none"
-  cutPay.style.display = "inline-block"
-  headerMenu.style.visibility = "visible"
-  e.preventDefault();
-})
-
-cutLink.addEventListener('click', (e) => {
-  turnOffAllViews()
-  cutScreen.style.display = "inline-block"
-  e.preventDefault();
-})
-
-payLink.addEventListener('click', (e) => {
-  getReceits()
-  e.preventDefault();
-})
-
-backCutPay.addEventListener('click', (e) => {
-  turnOffAllViews()
-  cutPay.style.display = "inline-block"
-  e.preventDefault();
-})
-
-backCutPay2.addEventListener('click', (e) => {
-  turnOffAllViews()
-  cutPay.style.display = "inline-block"
-  e.preventDefault();
-})
-
-backPay.addEventListener('click', (e) => {
-  turnOffAllViews()
-  payScreen.style.display = "inline-block"
-  e.preventDefault();
-})
-
-backPayments.addEventListener('click', (e) => {
-  turnOffAllViews()
-  payPie.style.display = "inline-block"
-  e.preventDefault();
-})
-
-selectPayment.addEventListener('click', (e) => {
-  turnOffAllViews()
-  // let venmoPay = document.createElement('button')
-  // venmoPay.type = 'button'
-  // venmoPay.style = "height: 50px;width: 65%;margin: auto;margin-bottom: 20px;"
-  // venmoPay.classList.add('btn','btn-secondary','btn-lrg')
-  // venmoPay.onclick = function(){ payWith('venmo') }
-  // venmoPay.innerText = 'Venmo'
-  fetch('https://api.slyce.cloud/receipt/pay/' + pieId + '/' + userId, {
-      method: 'GET', // *GET, POST, PUT, DELETE, etc.
-      mode: 'cors', // no-cors, *cors, same-origin
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
-    .then(response => {
-      return response.json()
-    })
-    .then(data => {
-      console.log(data)
-      let cost = data.data.attributes.cost
-      let pieCost = document.getElementById('pieCost')
-      let pieTax = document.getElementById('pieTax')
-      let pieTotal = document.getElementById('pieTotal')
-      pieCost.innerText = 'Cost: $' + cost.sub_total.toFixed(2)
-      pieTax.innerText = 'Tax: $' + cost.tax.toFixed(2)
-      pieTotal.innerText = '$' + cost.total.toFixed(2)
-      payments.style.display = "inline-block"
-    })
-    .catch(err => {
-    })
-  e.preventDefault()
-})
-
+function cameraStop() {
+  cameraView.style.display = 'none'
+  cameraSensor.style.display = 'none'
+  cameraTrigger.style.display = 'none'
+  track.stop();
+  cam.style.display = 'none'
+  headerSelector.style.display = 'block'
+  coverSelector.style.display = 'block'
+}
 
 function getReceits() {
   let pies = document.getElementById('pies')
@@ -200,7 +145,7 @@ function renderPie(data) {
   pieId = data.data.attributes.id
   taxCharge.innerText = data.data.attributes.taxes.toFixed(2) + '% Tax'
   //additionalCharge.innerText = data.data.attributes.taxes.toFixed(2) + '% Added Payment'
-  data.data.attributes.receiptLineItems.forEach((item, i) => {
+  data.data.attributes.receipt_items.forEach((item, i) => {
     console.log(item)
     let row = document.createElement('tr')
     let input1 = document.createElement('input')
@@ -279,11 +224,42 @@ function renderReceipts(data) {
 
 }
 
+function dataURLtoBlob(dataURL) {
+  let array, binary, i
+  binary = atob(dataURL.split(',')[1])
+  array = []
+  i = 0
+  while (i < binary.length) {
+    array.push(binary.charCodeAt(i))
+    i++
+  }
+  return new Blob([new Uint8Array(array)], {
+    type: 'image/jpg'
+  })
+}
+
+function sendFile(uploadUrl) {
+  fetch(uploadUrl.destination, {
+      method: 'PUT', // *GET, POST, PUT, DELETE, etc.
+      mode: 'cors', // no-cors, *cors, same-origin
+      body: photoFile,
+      headers: {
+        'Content-Type': 'image/jpeg'
+      }
+    })
+    .then(response => {
+      sendPie(uploadUrl.s3path)
+    })
+    .catch(err => {
+      console.log(err)
+    })
+}
+
 function uploadPhoto() {
-  let filename = 'random.jpg'
+  let filename = Math.random().toString(36).substr(2, 9) + '.jpg'
   let url = 'https://api.slyce.cloud/receipt/storage/' + userId + '/' + filename
-  fetch(url, {
-      method: 'GET', // *GET, POST, PUT, DELETE, etc.
+  return fetch(url, {
+      method: 'POST', // *GET, POST, PUT, DELETE, etc.
       mode: 'cors', // no-cors, *cors, same-origin
       headers: {
         'Content-Type': 'application/json'
@@ -293,7 +269,28 @@ function uploadPhoto() {
       return response.json()
     })
     .then(data => {
-      let uploadUrl = data.data.attributes.destination
+      return sendFile(data.data.attributes)
+    })
+    .catch(error => {
+      console.error(error);
+    })
+}
+
+function sendPie(url) {
+  fetch('https://api.slyce.cloud/receipt', {
+      method: 'POST', // *GET, POST, PUT, DELETE, etc.
+      mode: 'cors', // no-cors, *cors, same-origin
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({data:{attributes:{creator:userId,receipt_image:url}}})
+    })
+    .then(response => {
+      return response.json()
+    })
+    .then(data => {
+      let pieId = data.data.attributes.id
+      loadPie(pieId)
     })
     .catch(err => {
       //getReceits()
@@ -357,3 +354,162 @@ function payWith( method ) {
 
     })
 }
+
+///////////////////////////////////////////////////////////////////////////////
+// Events
+
+// Take a picture when cameraTrigger is tapped
+cameraTrigger.onclick = function() {
+  cameraSensor.width = 1080;
+  cameraSensor.height = 1920;
+  cameraOutput.style.display = 'inline-block';
+  cameraSensor.style.display = 'inline';
+  cameraSensor.getContext("2d").drawImage(cameraView, -480, 0, 1920, 1920);
+  cameraOutput.src = cameraSensor.toDataURL("image/jpeg");
+  photoFile = dataURLtoBlob(cameraSensor.toDataURL("image/jpeg"))
+  cameraOutput.classList.add("taken");
+  cameraRetake.style.display = 'inline-block';
+  cameraSave.style.display = 'inline-block';
+};
+
+// Take a picture when cameraTrigger is tapped
+cameraRetake.onclick = function() {
+  cameraOutput.src = '//:0';
+  cameraOutput.classList.remove("taken");
+  cameraRetake.style.display = 'none';
+  cameraSave.style.display = 'none';
+  cameraOutput.style.display = 'none';
+};
+
+// Take a picture when cameraTrigger is tapped
+cameraSave.onclick = function() {
+  cameraOutput.src = '//:0';
+  cameraOutput.classList.remove("taken");
+  cameraRetake.style.display = 'none';
+  cameraSave.style.display = 'none';
+  cameraOutput.style.display = 'none';
+  // uploadPhoto()
+  // .then(response => {
+  //   return response.json()
+  // })
+  // .then(data => {
+  //   sendFile()
+  cameraStop()
+  uploadPhoto()
+};
+
+cloudUpload.addEventListener('click', (e) => {
+  let input = document.createElement('input');
+  input.type = 'file';
+  input.onchange = e => {
+    if (e.target.files.length > 0) {
+      // getting a hold of the file reference
+      photoFile = e.target.files[0];
+      cameraStop()
+      turnOffAllViews()
+      uploadPhoto()
+    }
+  }
+  input.click();
+  e.preventDefault();
+})
+
+cameraEscape.addEventListener('click', (e) => {
+  cameraStop()
+  turnOffAllViews()
+  cutPay.style.display = "inline-block"
+  e.preventDefault();
+})
+
+userSettings.addEventListener('click', (e) => {
+  turnOffAllViews()
+  intro.style.display = "inline-block"
+  headerMenu.style.visibility = "hidden"
+  e.preventDefault();
+})
+
+introBtn.addEventListener('click', (e) => {
+  let introError = document.getElementById('introError')
+  userId = document.getElementById('userId').value.replace(' ', '_')
+  if (userId == '') {
+    introError.innerText = "Please enter a user name."
+    e.preventDefault();
+    return
+  }
+
+  introError.innerText = ""
+  turnOffAllViews()
+  intro.style.display = "none"
+  cutPay.style.display = "inline-block"
+  headerMenu.style.visibility = "visible"
+  e.preventDefault();
+})
+
+cutLink.addEventListener('click', (e) => {
+  turnOffAllViews()
+  cameraStart()
+  e.preventDefault();
+})
+
+payLink.addEventListener('click', (e) => {
+  getReceits()
+  e.preventDefault();
+})
+
+backCutPay.addEventListener('click', (e) => {
+  turnOffAllViews()
+  cutPay.style.display = "inline-block"
+  e.preventDefault();
+})
+
+backPay.addEventListener('click', (e) => {
+  turnOffAllViews()
+  payScreen.style.display = "inline-block"
+  e.preventDefault();
+})
+
+backPayments.addEventListener('click', (e) => {
+  turnOffAllViews()
+  payPie.style.display = "inline-block"
+  e.preventDefault();
+})
+
+selectPayment.addEventListener('click', (e) => {
+  turnOffAllViews()
+  // let venmoPay = document.createElement('button')
+  // venmoPay.type = 'button'
+  // venmoPay.style = "height: 50px;width: 65%;margin: auto;margin-bottom: 20px;"
+  // venmoPay.classList.add('btn','btn-secondary','btn-lrg')
+  // venmoPay.onclick = function(){ payWith('venmo') }
+  // venmoPay.innerText = 'Venmo'
+  fetch('https://api.slyce.cloud/receipt/pay/' + pieId + '/' + userId, {
+      method: 'GET', // *GET, POST, PUT, DELETE, etc.
+      mode: 'cors', // no-cors, *cors, same-origin
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(response => {
+      return response.json()
+    })
+    .then(data => {
+      console.log(data)
+      let cost = data.data.attributes.cost
+      let pieCost = document.getElementById('pieCost')
+      let pieTax = document.getElementById('pieTax')
+      let pieTotal = document.getElementById('pieTotal')
+      pieCost.innerText = 'Cost: $' + cost.sub_total.toFixed(2)
+      pieTax.innerText = 'Tax: $' + cost.tax.toFixed(2)
+      pieTotal.innerText = '$' + cost.total.toFixed(2)
+      payments.style.display = "inline-block"
+    })
+    .catch(err => {
+    })
+  e.preventDefault()
+})
+
+///////////////////////////////////////////////////////////////////////////////
+// Run Once
+
+turnOffAllViews()
+headerMenu.style.visibility = "hidden"

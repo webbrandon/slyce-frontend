@@ -5,14 +5,24 @@ html
     link(rel='stylesheet', href='/stylesheets/bootstrap.min.css')
     link(rel='stylesheet', href='/stylesheets/cover.css')
   body.text-center
+    script(src="https://unpkg.com/@popperjs/core@2.0.0-rc.3")
     div.cover-container.d-flex.w-100.h-100.p-3.mx-auto.flex-column
-      header.masthead
+      header.masthead#header
         div.inner
           img.masthead-brand#headerImage(src="/images/slyce-logo-top.png", width="220", height="110")
         nav.nav.nav-masthead.justify-content-center
           img.nav-link(src="/images/icons/gear-wide-connected.svg", width="100", height="100")#userSettings
-      main.inner.cover
+      main.inner.cover#main
         block content
+      section#camera
+        canvas#camera--sensor(width=1080, height=1920)
+        video#camera--view(autoplay, playsinline, width=1920, height=1920)
+        img#camera--output(src="//:0")
+        img#cloud--upload(src="/images/icons/cloud-upload.svg", width="100", height="100")
+        img#camera--escape(src="/images/icons/arrow-left.svg", width="100", height="100")
+        img#camera--trigger(src="/images/icons/camera.svg", width="200", height="200")
+        img#camera--retake(src="/images/icons/arrow-counterclockwise.svg", width="200", height="200")
+        button#camera--save Slyce
       footer.mastfoot.mt-auto
         script(src="/javascripts/app.js")
         div.inner
